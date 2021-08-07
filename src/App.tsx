@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { getProductsService } from "./services/products";
+import Products from "./pages/products";
 
 function App() {
   const [products, setProducts] = useState<any>([]);
@@ -13,8 +14,7 @@ function App() {
   }, []);
   return (
     <div>
-      {"Number of products:" + products?.length}
-      {JSON.stringify(products)}
+      <Products items={products} />
     </div>
   );
 }
