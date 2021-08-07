@@ -15,6 +15,10 @@ interface SearchBoxProps {
 const SearchBox: React.FC<SearchBoxProps> = ({ searchProducts }) => {
   const [inputText, setInputText] = useState<string>("");
 
+  const onChangeHandler = (inputText: string) => {
+    setInputText(inputText);
+    searchProducts(inputText);
+  };
   return (
     <div>
       <Container maxWidth="sm" className="sb-container">
@@ -28,7 +32,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ searchProducts }) => {
                   data-testid="search-input"
                   size="small"
                   value={inputText}
-                  onChange={(e) => setInputText(e.currentTarget.value)}
+                  onChange={(e) => onChangeHandler(e.currentTarget.value)}
                 />
               </FormControl>
             </Grid>
