@@ -7,6 +7,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import ProductDialog from "../ProductDialog";
+import { useState } from "react";
 
 interface ProductCardProps {
   title: string;
@@ -15,6 +17,7 @@ interface ProductCardProps {
   salePrice: string;
   price: string;
   imageLink: string;
+  additionalImageLinks: string;
 }
 
 const useStyles = makeStyles({
@@ -26,43 +29,58 @@ const useStyles = makeStyles({
   },
 });
 
-const ProductCard: React.FC<ProductCardProps> = ({
-  title,
-  gtin,
-  gender,
-  salePrice,
-  price,
-  imageLink,
-}) => {
+const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
   const classes = useStyles();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const handleCloseDialog = (event: React.MouseEvent<unknown>) => {
+    setDialogOpen(false);
+  };
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
   return (
-    <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia className={classes.media} image={imageLink} title={title} />
-        <CardContent>
-          <Typography gutterBottom variant="h6">
-            {title}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Gtin: {gtin}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Gender: {gender}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            sale price: {salePrice}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            price: {price}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
-      </CardActions>
-    </Card>
+    <>
+      <Card className={classes.root}>
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image={props.imageLink}
+            title={props.title}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h6">
+              {props.title}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Gtin: {props.gtin}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Gender: {props.gender}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Sale price: {props.salePrice}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Price: {props.price}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button
+            size="small"
+            color="primary"
+            onClick={(e) => handleOpenDialog()}
+          >
+            Learn More
+          </Button>
+        </CardActions>
+      </Card>
+      <ProductDialog
+        dialogOpen={dialogOpen}
+        handleClose={handleCloseDialog}
+        item={props}
+      />
+    </>
   );
 };
 

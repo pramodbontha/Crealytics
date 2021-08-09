@@ -11,6 +11,7 @@ interface ProductListProps {
 
 const ProductList: React.FC<ProductListProps> = ({ items }) => {
   const [page, setPage] = useState(1);
+  const itemsPerPage = 100;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -20,7 +21,7 @@ const ProductList: React.FC<ProductListProps> = ({ items }) => {
       <Container maxWidth="md">
         <Paper className="sb-paper">
           <Pagination
-            count={100}
+            count={itemsPerPage}
             page={page}
             onChange={handleChange}
             color="primary"
@@ -28,9 +29,12 @@ const ProductList: React.FC<ProductListProps> = ({ items }) => {
           />
           <Grid container spacing={1} data-testid="product-card-list">
             {items
-              .slice((page - 1) * 100, (page - 1) * 100 + 100)
+              .slice(
+                (page - 1) * itemsPerPage,
+                (page - 1) * itemsPerPage + itemsPerPage
+              )
               .map((item) => (
-                <Grid item xs={3} key={item[1]}>
+                <Grid item xs={12} sm={3} key={item[1]}>
                   <ProductCard
                     title={item[0]}
                     gtin={item[1]}
@@ -38,6 +42,7 @@ const ProductList: React.FC<ProductListProps> = ({ items }) => {
                     salePrice={item[3]}
                     price={item[4]}
                     imageLink={item[5]}
+                    additionalImageLinks={item[6]}
                   />
                 </Grid>
               ))}
